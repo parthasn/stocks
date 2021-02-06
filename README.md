@@ -2,7 +2,10 @@
 
 - First Page is for stock list
 
+- Stock Analysis
 - Second page is for checklist with comments
+
+peRatio [tick] [negative] [50] [Comments]
 
 # Getting Started with Create React App
 
