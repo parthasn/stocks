@@ -1,3 +1,9 @@
+## Features
+
+- First Page is for stock list
+
+- Second page is for checklist with comments
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
