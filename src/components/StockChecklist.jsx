@@ -15,7 +15,26 @@ export const CheckList = function(props){
 	const factors = getFactors(props.factors);
 	return <>
 			<h3>Stock Analysis for: </h3>
-			<TextField id="standard-basic" label="Enter Stock Name" />
+			<Grid container>
+				<Grid item xs={4}>
+					<TextField id="standard-basic" label="Enter Stock Name" />
+				</Grid>	
+				<Grid item xs={4}>
+					<Select label="Stock Type">
+						<MenuItem value={1}>Slow Grower</MenuItem>
+		  				<MenuItem value={2}>Stalwart</MenuItem>
+		  				<MenuItem value={3}>Cyclical</MenuItem>
+		  				<MenuItem value={4}>Fast Grower</MenuItem>
+		  				<MenuItem value={5}>Turnaround</MenuItem>
+		  				<MenuItem value={6}>Assetplay</MenuItem>
+					</Select>
+				</Grid>	
+				<Grid item xs={4}>
+					<Select helperText="Industry">
+						{props.industry.map(i => <MenuItem value={i}>{i}</MenuItem>)}
+					</Select>
+				</Grid>	
+			</Grid>
 			{factors}
 			</>;
 

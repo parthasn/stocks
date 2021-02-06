@@ -1,4 +1,7 @@
 export var data = {
+  "industry": [
+    "Finance", "IT"
+  ],
   "generalStockFactors": [
     {
       "factor": "P E Ratio",

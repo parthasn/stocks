@@ -9,7 +9,7 @@ function App() {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <CheckList factors={data.generalStockFactors}/>
+      <CheckList factors={data.generalStockFactors} industry={data.industry}/>
     </div>
   );
 }
