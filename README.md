@@ -5,11 +5,12 @@
 - Stock Analysis
 - Second page is for checklist with comments
 
+## TODO
+- Get an API that gives us this data
+- Parse it
+- calculate and display below scores 
+
 peRatio [tick] [negative] [50] [Comments]
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -23,57 +24,61 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+P/E ratio
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1 - 20 - 5pts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+80 - 100 - 1pts
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+Operating profit margin
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Primary business earnings - cost in primary business
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Net profit margin
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Total Earnings - Total Cost
 
-## Learn More
+Score for net and operating
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+if profit is more than previous year +1 and profit is less than previous year -1
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Dividend - The dividend is always declared by the company on the face value (FV) of a share irrespective of its market value. The rate of dividend is expressed as a percentage of the face value of a share per annum.
 
-### Code Splitting
+find percentage of dividend with market share price and if it falls above 10 % give it score from 1 to 5
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Debt (Loan)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Debt/Revenue
 
-### Making a Progressive Web App
+if debt and revenue both increase - OK
+if debt increases and revenue does not - BAD
+if debt decreases and revenue increases - GOOD
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Reducing debt to revenue means a good score for the company 
 
-### Advanced Configuration
+Profit
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If increasing then good
 
-### Deployment
+Reserves
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Same as profit
 
-### `yarn build` fails to minify
+Cash flow 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Same as profit (Preferably positive)
+
+
+
+
+ROE??
+
+Price in the last one year 
+
+Is it downward - upward means 
+
