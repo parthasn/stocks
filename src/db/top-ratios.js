@@ -7,29 +7,20 @@ function getItcPrice() {
     return (axios.get('https://www.screener.in/company/ITC/consolidated/'))
     .then((response) => {
         const html = cheerio.load(response.data);
-        const topRatios = html('#top-ratios');
-        // print(topRatios.children())
-        // topRatios.children().forEach((x) => print(x.html()))
-
+        // const topRatios = html('#top-ratios');
+        const ratios = {}
         html('li', '#top-ratios').each((i, el) => {
-          const leText = html(el).text().split('\n')
-          print(leText.filter(x => x.trim() !== ''));
+          const stringValues = html(el).text().split('\n').filter(x => x.trim() !== '')
+          // print(stringValues)
+          const key = stringValues.slice(0,1).join('').trim()
+          const value = stringValues.slice(1, stringValues.length)
+          ratios[key] = value
         })
-        return topRatios
+        
+        return ratios
       })
   }
 
+getItcPrice().then((b) => print(b))
 
-// async function getItcPrice() {
-//   const response = await axios.get('https://www.screener.in/company/ITC/consolidated/');
-//   const html = cheerio.load(response.data);
-//   const topRatios = html('#top-ratios');
-//   return topRatios
-// }
-
-async function main() {
-  await getItcPrice()
-}
-// getItcPrice().then((b) => print(b))
-
-main()
+// main()
