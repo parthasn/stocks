@@ -51,7 +51,6 @@ backend/build
 
 .gradle
 .class
-*.properties
 /build/
 backend/build/
 !gradle/wrapper/gradle-wrapper.jar
