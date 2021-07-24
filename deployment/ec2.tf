@@ -46,6 +46,30 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks      = ["117.200.94.223/32"]
   }
 
+  ingress {
+    description      = "TLS from Jenkins"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    cidr_blocks      = ["117.200.94.223/32"]
+  }
+
+  ingress {
+    description      = "TLS from UI"
+    from_port        = 3000
+    to_port          = 3000
+    protocol         = "tcp"
+    cidr_blocks      = ["117.200.94.223/32"]
+  }
+
+  ingress {
+    description      = "TLS from Backend"
+    from_port        = 8081
+    to_port          = 8081
+    protocol         = "tcp"
+    cidr_blocks      = ["117.200.94.223/32"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -55,7 +79,6 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "allow_ssh"
   }
 }
-
