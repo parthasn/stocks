@@ -40,5 +40,13 @@ pipeline {
         }
       }
     }
+    stage('Copy terraform local state files'){
+      steps{
+        sh '
+          mkdir -p ~/terraform/backup/
+          cp -r ./. ~/terraform/backup/
+        '
+      }
+    }
   }
 }
