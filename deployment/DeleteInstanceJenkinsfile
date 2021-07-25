@@ -1,0 +1,29 @@
+pipeline {
+  agent {
+    node {
+        label 'master'
+    }
+  }
+  stages {
+    stage('Clean Worspace'){
+        steps{
+            deleteDir() 
+        }
+    }
+    stage('Copy from backup') {
+      steps {
+        sh 'cp -r ~/terraform/backup/. .'
+      }
+    }
+    stage('Destroy') {
+      steps {
+        input 'Are you sure you want to delete resource?'
+        withEnv(['terraform=/usr/local/bin/terraform']) {
+          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+            sh 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} destroy -auto-approve'
+          }
+        }
+      }
+    }
+  }
+}
