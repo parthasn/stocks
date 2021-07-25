@@ -18,7 +18,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["117.200.94.223/32"]
+    cidr_blocks      = ["117.203.182.104/32"]
   }
 
   ingress {
@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 8081
     to_port          = 8081
     protocol         = "tcp"
-    cidr_blocks      = ["117.200.94.223/32"]
+    cidr_blocks      = ["117.203.182.104/32"]
   }
 
   egress {
