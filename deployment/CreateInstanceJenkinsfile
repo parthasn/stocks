@@ -46,6 +46,19 @@ pipeline {
         }
       }
     }
+    stage('Terraform Output') {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          dir("deployment/"){
+            withEnv(['terraform=/usr/local/bin/terraform']) {
+              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output"
+              }
+            }
+          }
+        }
+      }
+    }
     stage('Copy terraform local state files'){
       steps{
         dir("deployment/"){
