@@ -41,3 +41,29 @@ resource "aws_security_group" "allow_backend" {
     Name = "allow_backend"
   }
 }
+
+resource "null_resource" "setup_provisioner" {
+  triggers = {
+    public_ip = aws_instance.EC2BackendInstance.public_ip
+  }
+
+  connection {
+    type  = "ssh"
+    host  = aws_instance.EC2BackendInstance.public_ip
+    user  = ubuntu
+    port  = 22
+    agent = true
+  }
+
+  provisioner "file" {
+    source      = "./setup.sh"
+    destination = "/home/ubuntu/setup.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/setup.sh",
+      "/home/ubuntu/setup.sh > /home/ubuntu/setup.log",
+    ]
+  }
+}
