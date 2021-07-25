@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Git clone') {
         steps{
-            git poll: false, url: 'https://github.com/kumarRaj/stocks.git'
+            git poll: false, branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
     stage('Terraform Init') {
