@@ -23,9 +23,11 @@ pipeline {
     }
     stage('Terraform Plan') {
       steps {
-        withEnv(['terraform=/usr/local/bin/terraform']) {
-          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-            sh "cd deployment/ && AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} plan"
+        dir("deployment/"){
+          withEnv(['terraform=/usr/local/bin/terraform']) {
+            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+              sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} plan"
+            }
           }
         }
       }
@@ -33,19 +35,25 @@ pipeline {
     stage('Terraform Apply') {
       steps {
         input 'Apply Plan'
-        withEnv(['terraform=/usr/local/bin/terraform']) {
-          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-            sh "cd deployment/ && AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} apply -auto-approve"
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          dir("deployment/"){
+            withEnv(['terraform=/usr/local/bin/terraform']) {
+              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} apply -auto-approve"
+              }
+            }
           }
         }
       }
     }
     stage('Copy terraform local state files'){
       steps{
-        sh '''
-          mkdir -p ~/terraform/backup/
-          cp -r ./. ~/terraform/backup/
-        '''
+        dir("deployment/"){
+          sh '''
+            mkdir -p ~/terraform/backup/
+            cp -r ./. ~/terraform/backup/
+          '''
+        }
       }
     }
   }
