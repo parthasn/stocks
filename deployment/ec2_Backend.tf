@@ -50,20 +50,16 @@ resource "null_resource" "setup_provisioner" {
   connection {
     type  = "ssh"
     host  = aws_instance.EC2BackendInstance.public_ip
-    user  = ubuntu
+    user  = "ubuntu"
     port  = 22
     agent = true
-  }
-
-  provisioner "file" {
-    source      = "./setup.sh"
-    destination = "/home/ubuntu/setup.sh"
+    private_key = "${file("~/.ssh/id_rsa")}"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/setup.sh",
-      "/home/ubuntu/setup.sh > /home/ubuntu/setup.log",
+      "sudo apt install -y openjdk-11-jdk",
+      "java -version"
     ]
   }
 }
