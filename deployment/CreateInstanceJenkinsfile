@@ -10,6 +10,11 @@ pipeline {
             git poll: false, branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
+    stage('Clean Worspace'){
+        steps{
+            deleteDir()
+        }
+    }
     stage('Terraform Init') {
       steps {
         dir("deployment/"){
@@ -46,19 +51,6 @@ pipeline {
         }
       }
     }
-    stage('Terraform Output') {
-      steps {
-        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-          dir("deployment/"){
-            withEnv(['terraform=/usr/local/bin/terraform']) {
-              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output"
-              }
-            }
-          }
-        }
-      }
-    }
     stage('Copy terraform local state files'){
       steps{
         dir("deployment/"){
@@ -66,6 +58,31 @@ pipeline {
             mkdir -p ~/terraform/backup/
             cp -r ./. ~/terraform/backup/
           '''
+        }
+      }
+    }
+    stage('Terraform Output') {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          dir("deployment/"){
+            withEnv(['terraform=/usr/local/bin/terraform']) {
+              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh '''
+                touch ./instance_info.properties
+                echo $(AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output) >> instance_info.properties
+                '''
+              }
+            }
+          }
+        }
+      }
+    }
+    stage('Launch Backend Application'){
+      steps{
+        dir("deployment/"){ 
+          properties = readProperties file: './instance_info.properties'
+          build job: 'Start_Spring_Application', parameters: [[$class: 'StringParameterValue', name: 'IPAddress', value: ${properties.instance_backend_public_ip}],
+                      [$class: 'StringParameterValue', name: 'instanceUser', value: 'ubuntu']]
         }
       }
     }
