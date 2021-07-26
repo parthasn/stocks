@@ -16,7 +16,7 @@ pipeline {
     }
     stage('Git clone') {
       steps {
-        git branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
+        git branch: 'master', url: 'https://github.com/kumarRaj/stocks.git'
         
       }
     }

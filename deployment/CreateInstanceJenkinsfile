@@ -12,7 +12,7 @@ pipeline {
     }
     stage('Git clone') {
         steps{
-            git poll: false, branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
+            git poll: false, branch: 'master', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
     stage('Terraform Init') {
@@ -81,6 +81,7 @@ pipeline {
     stage('Launch Backend Application'){
       steps{
         script{
+          sh 'sleep 300'
           properties = readProperties file: './deployment/instance_info.properties'
           build job: 'Start_Spring_Application', parameters: [string(name: 'IPAddress', value: properties['backendIP']), string(name: 'instanceUser', value: 'ubuntu')]
         }
