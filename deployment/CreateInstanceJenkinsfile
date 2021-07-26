@@ -5,14 +5,14 @@ pipeline {
     }
   }
   stages {
-    stage('Git clone') {
-        steps{
-            git poll: false, branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
-        }
-    }
     stage('Clean Worspace'){
         steps{
             deleteDir()
+        }
+    }
+    stage('Git clone') {
+        steps{
+            git poll: false, branch: 'sunandan-dev', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
     stage('Terraform Init') {
@@ -79,8 +79,8 @@ pipeline {
     }
     stage('Launch Backend Application'){
       steps{
-        dir("deployment/"){ 
-          properties = readProperties file: './instance_info.properties'
+        script{
+          properties = readProperties file: './deployment/instance_info.properties'
           build job: 'Start_Spring_Application', parameters: [[$class: 'StringParameterValue', name: 'IPAddress', value: ${properties.instance_backend_public_ip}],
                       [$class: 'StringParameterValue', name: 'instanceUser', value: 'ubuntu']]
         }
