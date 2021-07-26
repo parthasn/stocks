@@ -69,7 +69,8 @@ pipeline {
               withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                 sh '''
                 touch ./instance_info.properties
-                AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output -raw >> instance_info.properties
+                backendIP=$(AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output -raw instance_backend_public_ip)
+                echo "backendIP = ${backendIP}" > ./instance_info.properties
                 '''
               }
             }
@@ -81,7 +82,7 @@ pipeline {
       steps{
         script{
           properties = readProperties file: './deployment/instance_info.properties'
-          build job: 'Start_Spring_Application', parameters: [string(name: 'IPAddress', value: properties['instance_backend_public_ip']), string(name: 'instanceUser', value: 'ubuntu')]
+          build job: 'Start_Spring_Application', parameters: [string(name: 'IPAddress', value: properties['backendIP']), string(name: 'instanceUser', value: 'ubuntu')]
         }
       }
     }
