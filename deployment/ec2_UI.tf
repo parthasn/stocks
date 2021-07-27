@@ -19,7 +19,7 @@ resource "aws_security_group" "allow_UI" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["59.98.21.159/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32"]
   }
 
   ingress {
@@ -27,7 +27,7 @@ resource "aws_security_group" "allow_UI" {
     from_port        = 3000
     to_port          = 3000
     protocol         = "tcp"
-    cidr_blocks      = ["59.98.21.159/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32"]
   }
 
   egress {
@@ -40,5 +40,29 @@ resource "aws_security_group" "allow_UI" {
 
   tags = {
     Name = "allow_UI"
+  }
+}
+
+resource "null_resource" "setup_UI_provisioner" {
+  triggers = {
+    public_ip = aws_instance.EC2UIInstance.public_ip
+  }
+
+  connection {
+    type  = "ssh"
+    host  = aws_instance.EC2UIInstance.public_ip
+    user  = "ubuntu"
+    port  = 22
+    agent = true
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update",
+      "sudo apt install -y nodejs",
+      "sudo apt install -y npm",
+      "nodejs -v"
+    ]
   }
 }

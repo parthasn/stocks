@@ -78,14 +78,13 @@ pipeline {
         }
       }
     }
-    stage('Launch Backend Application'){
+     stage('Launch Backend Application'){
       steps{
         script{
-          sh 'sleep 300'
           properties = readProperties file: './deployment/instance_info.properties'
           build job: 'Start_Spring_Application', parameters: [string(name: 'IPAddress', value: properties['backendIP']), string(name: 'instanceUser', value: 'ubuntu')]
         }
       }
-    }
+     }
   }
 }

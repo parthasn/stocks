@@ -33,7 +33,7 @@ pipeline {
       steps {
         dir("backend/build/libs"){
             sshagent(['stocks']) {
-              sh 'scp ./stocks-0.0.1-SNAPSHOT.jar ${instanceUser}@${IPAddress}:/home/ubuntu/'
+              sh 'scp -o StrictHostKeyChecking=no ./stocks-0.0.1-SNAPSHOT.jar ${instanceUser}@${IPAddress}:/home/ubuntu/'
             }
         }
       }

@@ -18,7 +18,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["59.98.21.159/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32"]
   }
 
   ingress {
@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 8081
     to_port          = 8081
     protocol         = "tcp"
-    cidr_blocks      = ["59.98.21.159/32","${aws_instance.EC2UIInstance.public_ip}/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32","${aws_instance.EC2UIInstance.public_ip}/32"]
   }
 
   egress {
@@ -42,7 +42,7 @@ resource "aws_security_group" "allow_backend" {
   }
 }
 
-resource "null_resource" "setup_provisioner" {
+resource "null_resource" "setup_backend_provisioner" {
   triggers = {
     public_ip = aws_instance.EC2BackendInstance.public_ip
   }
