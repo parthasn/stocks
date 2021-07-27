@@ -5,9 +5,14 @@ pipeline {
     }
   }
   stages {
+    stage('Clean Worspace'){
+        steps{
+            deleteDir()
+        }
+    }
     stage('Git clone') {
         steps{
-            git poll: false, url: 'https://github.com/kumarRaj/stocks.git'
+            git poll: false, branch: 'master', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
     stage('Terraform Init') {
@@ -15,7 +20,7 @@ pipeline {
         dir("deployment/"){
           withEnv(['terraform=/usr/local/bin/terraform']) {
             withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} init -input=false"
+                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} init"
             }
           }
         }
@@ -23,9 +28,11 @@ pipeline {
     }
     stage('Terraform Plan') {
       steps {
-        withEnv(['terraform=/usr/local/bin/terraform']) {
-          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-            sh "cd deployment/ && AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} plan -out=tfplan -input=false"
+        dir("deployment/"){
+          withEnv(['terraform=/usr/local/bin/terraform']) {
+            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+              sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} plan"
+            }
           }
         }
       }
@@ -33,12 +40,51 @@ pipeline {
     stage('Terraform Apply') {
       steps {
         input 'Apply Plan'
-        withEnv(['terraform=/usr/local/bin/terraform']) {
-          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-            sh "cd deployment/ && AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} apply -input=false tfplan"
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          dir("deployment/"){
+            withEnv(['terraform=/usr/local/bin/terraform']) {
+              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} apply -auto-approve"
+              }
+            }
           }
         }
       }
     }
+    stage('Copy terraform local state files'){
+      steps{
+        dir("deployment/"){
+          sh '''
+            mkdir -p ~/terraform/backup/
+            cp -r ./. ~/terraform/backup/
+          '''
+        }
+      }
+    }
+    stage('Terraform Output') {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          dir("deployment/"){
+            withEnv(['terraform=/usr/local/bin/terraform']) {
+              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh '''
+                touch ./instance_info.properties
+                backendIP=$(AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output -raw instance_backend_public_ip)
+                echo "backendIP = ${backendIP}" > ./instance_info.properties
+                '''
+              }
+            }
+          }
+        }
+      }
+    }
+     stage('Launch Backend Application'){
+      steps{
+        script{
+          properties = readProperties file: './deployment/instance_info.properties'
+          build job: 'Start_Spring_Application', parameters: [string(name: 'IPAddress', value: properties['backendIP']), string(name: 'instanceUser', value: 'ubuntu')]
+        }
+      }
+     }
   }
 }

@@ -12,17 +12,6 @@
 
 peRatio [tick] [negative] [50] [Comments]
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
 
 
@@ -81,4 +70,30 @@ ROE??
 Price in the last one year 
 
 Is it downward - upward means 
+
+
+
+# Jenkins Setup
+
+## Plugins to install 
+- Pipeline Utility Steps
+- SSH Agent Plugin
+- Gradle
+- Gradle Repo Plugin
+
+## Jobs(Pipeline Jobs)
+- Name : Launch_Instance -> Jenkinsfile : deployment/CreateInstanceJenkinsfile
+- Name : Start_Spring_Application -> Jenkinsfile : deployment/StartSpringApplicationJenkinsFile
+- Name : Delete_Instance -> Jenkinsfile : deployment/DeleteInstanceJenkinsfile
+
+## Credential
+- Username and password
+    - CredentialID : AWS_ACCESS_KEY_ID_Credential 
+        username : AWS_ACCESS_KEY_ID
+        password : AWS_SECRET_ACCESS_KEY
+- SSH username with private key
+    - CredentialID : stocks
+        username : <blank>
+        paraphrase : <blank>
+        privateKey : paste
 

@@ -18,7 +18,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["117.200.94.223/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32"]
   }
 
   ingress {
@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 8081
     to_port          = 8081
     protocol         = "tcp"
-    cidr_blocks      = ["117.200.94.223/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32","${aws_instance.EC2UIInstance.public_ip}/32"]
   }
 
   egress {
@@ -39,5 +39,27 @@ resource "aws_security_group" "allow_backend" {
 
   tags = {
     Name = "allow_backend"
+  }
+}
+
+resource "null_resource" "setup_backend_provisioner" {
+  triggers = {
+    public_ip = aws_instance.EC2BackendInstance.public_ip
+  }
+
+  connection {
+    type  = "ssh"
+    host  = aws_instance.EC2BackendInstance.public_ip
+    user  = "ubuntu"
+    port  = 22
+    agent = true
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt install -y openjdk-11-jdk",
+      "java -version"
+    ]
   }
 }

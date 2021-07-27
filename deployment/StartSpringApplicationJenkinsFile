@@ -1,0 +1,57 @@
+pipeline {
+  agent {
+    node {
+        label 'master'
+    }
+  }
+  parameters{
+      string(name:'IPAddress', defaultValue: '', description: 'Please enter the default ip address')
+      string(name:'instanceUser', defaultValue: 'ubuntu', description: 'Please enter the username')
+  }
+  stages {
+    stage('Clean Worspace'){
+        steps{
+            deleteDir()
+        }
+    }
+    stage('Git clone') {
+      steps {
+        git branch: 'master', url: 'https://github.com/kumarRaj/stocks.git'
+        
+      }
+    }
+    stage('Gradle') {
+      steps {
+        dir("backend/"){
+            withGradle {
+                sh './gradlew build'
+            }
+        }
+      }
+    }
+    stage('Copy jar in Remote System') {
+      steps {
+        dir("backend/build/libs"){
+            sshagent(['stocks']) {
+              sh 'scp -o StrictHostKeyChecking=no ./stocks-0.0.1-SNAPSHOT.jar ${instanceUser}@${IPAddress}:/home/ubuntu/'
+            }
+        }
+      }
+    }
+    stage('Install Jar') {
+      steps {
+        dir("deployment/"){
+            sshagent(['stocks']) {
+               sh '''
+                ssh -tt ${instanceUser}@${IPAddress} << EOF 
+                fuser -k 8081/tcp
+                java -jar *.jar&
+                exit
+                EOF
+               '''
+            }
+        }
+      }
+    }
+  }
+}
