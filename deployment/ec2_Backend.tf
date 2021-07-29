@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_backend" {
     from_port        = 8081
     to_port          = 8081
     protocol         = "tcp"
-    cidr_blocks      = ["${chomp(data.http.myip.body)}/32","${aws_instance.EC2UIInstance.public_ip}/32"]
+    cidr_blocks      = ["${chomp(data.http.myip.body)}/32"]
   }
 
   egress {
