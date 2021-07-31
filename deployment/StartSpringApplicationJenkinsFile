@@ -27,7 +27,7 @@ pipeline {
       steps {
         dir("backend/"){
             withGradle {
-                sh 'gradle build'
+                sh './gradlew build'
             }
         }
       }
