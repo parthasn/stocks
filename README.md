@@ -81,6 +81,7 @@ Is it downward - upward means
 - Gradle
 - Gradle Repo Plugin
 - Pipeline: AWS Steps
+- NodeJS Plugin
 
 ## Jobs(Pipeline Jobs)
 - Name : Launch_Instance -> Jenkinsfile : deployment/CreateInstanceJenkinsfile
