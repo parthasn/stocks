@@ -23,23 +23,11 @@ pipeline {
         
       }
     }
-    stage('Gradle Wrapper') {
-      steps {
-        dir("backend/"){
-            withGradle {
-                sh '''
-                  gradle -v
-                  gradle wrapper
-                '''
-            }
-        }
-      }
-    }
     stage('Gradle Build') {
       steps {
         dir("backend/"){
             withGradle {
-                sh './gradlew build'
+                sh 'gradle build'
             }
         }
       }
