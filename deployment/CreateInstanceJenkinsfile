@@ -12,7 +12,7 @@ pipeline {
     }
     stage('Git clone') {
         steps{
-            git poll: false, branch: 'master', url: 'https://github.com/kumarRaj/stocks.git'
+            git poll: false, branch: 'configureS3', url: 'https://github.com/kumarRaj/stocks.git'
         }
     }
     stage('Terraform Init') {
