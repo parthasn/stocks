@@ -48,7 +48,7 @@ pipeline {
         }
       }
     }
-    stage('Copyterraformlocal state files'){
+    stage('Copy terraform local state files'){
       steps{
         dir("deployment/"){
           sh '''
