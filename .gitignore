@@ -48,7 +48,7 @@ hs_err_pid*
 
 backend/.gradle
 backend/build
-
+!backend/gradle/wrapper/gradle-wrapper.jar
 .gradle
 .class
 /build/
