@@ -4,6 +4,9 @@ pipeline {
         label 'master'
     }
   }
+  tools {
+     terraform "Terraform"
+  }
   stages {
     stage('Clean Worspace'){
         steps{
@@ -18,10 +21,8 @@ pipeline {
     stage('Terraform Init') {
       steps {
         dir("deployment/"){
-          withEnv(['terraform=/usr/local/bin/terraform']) {
-            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} init"
-            }
+          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+              sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} terraform init"
           }
         }
       }
@@ -29,10 +30,8 @@ pipeline {
     stage('Terraform Plan') {
       steps {
         dir("deployment/"){
-          withEnv(['terraform=/usr/local/bin/terraform']) {
-            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-              sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} plan"
-            }
+          withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+            sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} terraform plan"
           }
         }
       }
@@ -42,10 +41,8 @@ pipeline {
         input 'Apply Plan'
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
           dir("deployment/"){
-            withEnv(['terraform=/usr/local/bin/terraform']) {
-              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} apply -auto-approve"
-              }
+            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+              sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} terraform apply -auto-approve"
             }
           }
         }
@@ -65,14 +62,12 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
           dir("deployment/"){
-            withEnv(['terraform=/usr/local/bin/terraform']) {
-              withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh '''
-                touch ./instance_info.properties
-                backendIP=$(AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ${terraform} output -raw instance_backend_public_ip)
-                echo "backendIP = ${backendIP}" > ./instance_info.properties
-                '''
-              }
+            withCredentials([usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID_Credential', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+              sh '''
+              touch ./instance_info.properties
+              backendIP=$(AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} terraform output -raw instance_backend_public_ip)
+              echo "backendIP = ${backendIP}" > ./instance_info.properties
+              '''
             }
           }
         }
