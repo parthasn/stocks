@@ -1,0 +1,56 @@
+pipeline {
+  agent {
+    node {
+        label 'master'
+    }
+  }
+  parameters{
+      string(name:'IPAddress', defaultValue: 'localhost', description: 'Please enter the backend ip address')
+  }
+  tools{
+      nodejs "nodejs"
+  }
+  stages {
+    stage('Clean Worspace'){
+        steps{
+            deleteDir()
+        }
+    }
+    stage('Git clone') {
+      steps {
+        git branch: 'configureS3', url: 'https://github.com/kumarRaj/stocks.git'
+      }
+    }
+    stage('Install dependencies') {
+      steps {
+        dir("stocks-ui/"){
+            sh 'npm clean-install'
+        }
+      }
+    }
+    stage('Update Enviornment File') {
+      steps {
+        sh '''
+            find . -name '.env' -print0 | xargs -0 sed -i "" "s/REACT_APP_SERVER_HOST=10.1.2.3/REACT_APP_SERVER_HOST=${IPAddress}/g"
+        '''
+      }
+    }
+    stage('Build') {
+      steps {
+        dir("stocks-ui/"){
+            sh '''
+                npm run build
+            '''
+        }
+      }
+    }
+    stage('Upload to S3') {
+      steps {
+           withAWS(region:'us-east-1',credentials:'	AWS_Credentials') {
+                awsIdentity()
+                s3Upload(bucket:"stock-ui-bucket", workingDir:'stocks-ui/build/', includePathPattern:'**/*');
+            }
+        }
+      }
+    } 
+}
