@@ -80,11 +80,13 @@ Is it downward - upward means
 - SSH Agent Plugin
 - Gradle
 - Gradle Repo Plugin
+- Pipeline: AWS Steps
 
 ## Jobs(Pipeline Jobs)
 - Name : Launch_Instance -> Jenkinsfile : deployment/CreateInstanceJenkinsfile
 - Name : Start_Spring_Application -> Jenkinsfile : deployment/StartSpringApplicationJenkinsFile
 - Name : Delete_Instance -> Jenkinsfile : deployment/DeleteInstanceJenkinsfile
+- Name : Launch_UI_Application -> Jenkinsfile : deployment/LaunchUIJenkinsfile
 
 ## Credential
 - Username and password
@@ -96,4 +98,8 @@ Is it downward - upward means
         username : <blank>
         paraphrase : <blank>
         privateKey : paste
+- AWS Credentials
+    - ID : AWS_Credentials
+        Access Key ID : <paste AWS Access Key ID>
+        Secret Access Key : <paste AWS Secret Access Key>
 
