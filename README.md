@@ -90,10 +90,13 @@ Is it downward - upward means
 - Name : Launch_UI_Application -> Jenkinsfile : deployment/LaunchUIJenkinsfile
 
 ## Credential
-- Username and password
-    - CredentialID : AWS_ACCESS_KEY_ID_Credential 
-        username : AWS_ACCESS_KEY_ID
-        password : AWS_SECRET_ACCESS_KEY
+- Secret text
+    - CredentialID : AWS_ACCESS_KEY_ID
+        ID : AWS_ACCESS_KEY_ID
+        secret : <paste AWS Secret Key ID>
+    - CredentialID : AWS_SECRET_ACCESS_KEY
+        ID : AWS_SECRET_ACCESS_KEY
+        secret : <paste AWS Secret Access Key>
 - SSH username with private key
     - CredentialID : stocks
         username : <blank>
