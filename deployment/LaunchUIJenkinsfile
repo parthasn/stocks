@@ -31,7 +31,7 @@ pipeline {
     stage('Update Enviornment File') {
       steps {
         sh '''
-            find . -name '.env' -print0 | xargs -0 sed -i "" "s/REACT_APP_SERVER_HOST=10.1.2.3/REACT_APP_SERVER_HOST=${IPAddress}/g"
+            find . -name '.env' -print0 | xargs -0 sed -i "" "s/REACT_APP_SERVER_HOST=localhost/REACT_APP_SERVER_HOST=${IPAddress}/g"
         '''
       }
     }
