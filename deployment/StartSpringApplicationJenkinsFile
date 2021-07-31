@@ -1,4 +1,4 @@
-pipeline {
+../deployment/StartSpringApplicationJenkinsFilepipeline {
   agent {
     node {
         label 'master'
@@ -20,7 +20,19 @@ pipeline {
         
       }
     }
-    stage('Gradle') {
+    stage('Gradle Wrapper') {
+      steps {
+        dir("backend/"){
+            withGradle {
+                sh '''
+                  gradle -v
+                  gradle wrapper
+                '''
+            }
+        }
+      }
+    }
+    stage('Gradle Build') {
       steps {
         dir("backend/"){
             withGradle {
