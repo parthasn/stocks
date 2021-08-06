@@ -1,11 +1,30 @@
 const cheerio = require('cheerio')
 const axios = require('axios');
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3()
 
 const print = console.log
 
 var testHandler = exports.handler =  async function(event, context) {
-    print(await getStockDetails(event))
-    return context.logStreamName
+    const ratios = await getStockDetails(event);
+    print(ratios)
+    await saveToS3(ratios)
+    // return context.logStreamName
+}
+
+async function saveToS3(data) {
+    const s3Bucket = 'stock-ui-bucket';
+    const objectName = data.stockId;
+    const objectType = 'application/json';
+
+    const params = {
+       Bucket: s3Bucket,
+       Key: objectName,
+       Body: JSON.stringify(data),
+       ContentType: objectType,
+    };
+
+    const result = await s3.putObject(params).promise();
 }
 
 function getStockDetails(stockId) {
@@ -21,7 +40,7 @@ function getStockDetails(stockId) {
           rawRatios.push(value)
         })
 
-        ratios = {}
+        ratios = { stockId: stockId}
         const getMarketCap = () => rawRatios[0][1].trim()
         const getPe = () => rawRatios[3][0].trim()
         ratios['marketCap'] = getMarketCap()
