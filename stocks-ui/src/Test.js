@@ -16,7 +16,7 @@ function Test() {
       headers: myHeaders,
     };
 
-    fetch(serverUrl + "/HelloWorld", requestOptions)
+    fetch(serverUrl + "/health", requestOptions)
     .then(response => response.text())
     .then(result => setMessage(result))
     .catch((error) => console.log("error", error));
