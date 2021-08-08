@@ -7,7 +7,6 @@ const print = console.log
 
 var testHandler = exports.handler =  async function(event, context) {
     const ratios = await getStockDetails(event);
-    print(ratios)
     await saveToS3(ratios)
     // return context.logStreamName
 }
