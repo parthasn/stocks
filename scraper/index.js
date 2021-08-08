@@ -14,7 +14,7 @@ var testHandler = exports.handler =  async function(event, context) {
 
 async function saveToS3(data) {
     const s3Bucket = 'stock-ui-bucket';
-    const objectName = data.stockId;
+    const objectName = 'data/' + data.stockId;
     const objectType = 'application/json';
 
     const params = {
@@ -49,4 +49,4 @@ function getStockDetails(stockId) {
       })
   }
 
-testHandler("ITC")
+// testHandler("ITC")
