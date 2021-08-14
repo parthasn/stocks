@@ -35,10 +35,31 @@ function getStockDetails(stockId) {
     
   }
 
+  function getOPMDetails(stockId) {
+    return fs.readFile('scratch/itc.html', (err, data) => {
+        const html = cheerio.load(data);
+
+        const year = []
+        const OPM = []
+        html('thead:first-child tr th', '#profit-loss').each((i, el) => {
+          const stringValues = html(el).text().split('\n').filter(x => x.trim() !== '')
+          year.push(stringValues)
+        })
+        html('tbody:nth-child(2) tr:nth-child(4) td', '#profit-loss').each((i, el) => {
+          const stringValues = html(el).text().split('\n').filter(x => x.trim() !== '')
+          OPM.push(stringValues)
+        })
+
+        const finalOPM = []
+
+        totalLength = year.length;
+        for(let i = 1; i < totalLength; i++){
+          finalOPM.push({[year[i]]: OPM[i][0]})
+        }
+        // console.log(finalOPM)
+        return finalOPM;
+    })
+    
+  }
+
 testHandler("ITC")
-
-
-//profit-loss
-// 1st tbody
-// 4th tr
-// all td
