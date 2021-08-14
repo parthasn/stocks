@@ -12,8 +12,8 @@ var testHandler = exports.handler =  async function(event, context) {
 }
 
 function getStockDetails(stockId) {
-    return (axios.get(`https://www.screener.in/company/${stockId}/consolidated/`))
-    fs.readFile('itc.html', (err, data) => {
+    // return (axios.get(`https://www.screener.in/company/${stockId}/consolidated/`))
+    return fs.readFile('scratch/itc.html', (err, data) => {
         const html = cheerio.load(data);
 
         const rawRatios = []
@@ -36,3 +36,9 @@ function getStockDetails(stockId) {
   }
 
 testHandler("ITC")
+
+
+//profit-loss
+// 1st tbody
+// 4th tr
+// all td
