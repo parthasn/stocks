@@ -29,6 +29,8 @@ function getStockDetails(stockId) {
         const getPe = () => rawRatios[3][0].trim()
         ratios['marketCap'] = getMarketCap()
         ratios['pe'] = getPe()
+        getOPMDetails(stockId)
+        getNPMDetails(stockId) 
         print(ratios)
         return ratios
     })
@@ -56,8 +58,35 @@ function getStockDetails(stockId) {
         for(let i = 1; i < totalLength; i++){
           finalOPM.push({[year[i]]: OPM[i][0]})
         }
-        // console.log(finalOPM)
+        console.log(finalOPM)
         return finalOPM;
+    })
+    
+  }
+
+  function getNPMDetails(stockId) {
+    return fs.readFile('scratch/itc.html', (err, data) => {
+        const html = cheerio.load(data);
+
+        const year = []
+        const NPM = []
+        html('thead:first-child tr th', '#profit-loss').each((i, el) => {
+          const stringValues = html(el).text().split('\n').filter(x => x.trim() !== '')
+          year.push(stringValues)
+        })
+        html('tbody:nth-child(2) tr:nth-child(10) td', '#profit-loss').each((i, el) => {
+          const stringValues = html(el).text().split('\n').filter(x => x.trim() !== '')
+          NPM.push(stringValues)
+        })
+
+        const finalNPM = []
+
+        totalLength = year.length;
+        for(let i = 1; i < totalLength; i++){
+          finalNPM.push({[year[i]]: NPM[i][0]})
+        }
+        console.log(finalNPM)
+        return finalNPM;
     })
     
   }
