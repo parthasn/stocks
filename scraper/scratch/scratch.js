@@ -23,12 +23,16 @@ function getStockDetails(stockId) {
           const value = stringValues.slice(1, stringValues.length)
           rawRatios.push(value)
         })
-
+        // print(rawRatios)
         ratios = {}
         const getMarketCap = () => rawRatios[0][1].trim()
         const getPe = () => rawRatios[3][0].trim()
+        const getDividend = () => rawRatios[5][0].trim() + '%'
+        const getFaceValue = () => rawRatios[8][1].trim()
         ratios['marketCap'] = getMarketCap()
         ratios['pe'] = getPe()
+        ratios['diviend'] = getDividend()
+        ratios['faceValue'] = getFaceValue()
         getOPMDetails(stockId)
         getNPMDetails(stockId) 
         print(ratios)

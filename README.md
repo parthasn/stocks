@@ -27,9 +27,7 @@ Operating profit margin
 Primary business earnings - cost in primary business
 
 
-Net profit margin
-
-Total Earnings - Total Cost
+Net profit margin = Total Earnings - Total Cost
 
 Score for net and operating
 
