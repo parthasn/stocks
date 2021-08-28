@@ -40,9 +40,9 @@ function getStockDetails(stockId) {
     ratios["OPM"] = getOPM(html);
     ratios["NPM"] = getNPM(html);
     ratios["Debt"] = {
-      Revenue: getRevenue(html),
-      Borrowings: getBorrowing(html),
-      OtherLiabilities: getOtherLiabilities(html),
+      "Revenue": getRevenue(html),
+      "Borrowings": getBorrowing(html),
+      "OtherLiabilities": getOtherLiabilities(html),
     };
     print("Final data : " + JSON.stringify(ratios));
     return ratios;
