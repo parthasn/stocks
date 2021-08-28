@@ -54,164 +54,88 @@ function getStockDetails(stockId) {
     ratios["PE"] = getPe();
     ratios["Diviend"] = getDividend();
     ratios["FaceValue"] = getFaceValue();
-    ratios["OPM"] = getOPMDetails(html);
-    ratios["NPM"] = getNPMDetails(html);
+    ratios["OPM"] = getOPM(html);
+    ratios["NPM"] = getNPM(html);
     ratios["Debt"]= {
-      "Revenue": getRevenueDetails(html),
-      "Borrowings": getBorrowingDetails(html),
-      "OtherLiabilities": getOtherLiabilitiesDetails(html)
+      "Revenue": getRevenue(html),
+      "Borrowings": getBorrowing(html),
+      "OtherLiabilities": getOtherLiabilities(html)
     };
       return ratios;
     });
 }
 
-function getNPMDetails(html) {
+function getDetails(html, yearSelector, dataSelector, sectionSelector) {
   const year = [];
-  const NPM = [];
-  html("thead:first-child tr th", "#profit-loss").each((i, el) => {
+  const data = [];
+  html(yearSelector, sectionSelector).each((i, el) => {
     const stringValues = html(el)
       .text()
       .split("\n")
       .filter((x) => x.trim() !== "");
     year.push(stringValues);
   });
-  html("tbody:nth-child(2) tr:nth-child(10) td", "#profit-loss").each(
-    (i, el) => {
-      const stringValues = html(el)
-        .text()
-        .split("\n")
-        .filter((x) => x.trim() !== "");
-      NPM.push(stringValues);
-    }
+  html(dataSelector, sectionSelector).each((i, el) => {
+    const stringValues = html(el)
+      .text()
+      .split("\n")
+      .filter((x) => x.trim() !== "");
+    data.push(stringValues);
+  });
+
+  const finalData = [];
+
+  totalLength = year.length;
+  for (let i = 1; i < totalLength; i++) {
+    finalData.push({ [year[i]]: data[i][0] });
+  }
+  // console.log(finalData);
+  return finalData;
+}
+
+function getOPM(html) {
+  return getDetails(
+    html,
+    "thead:first-child tr th",
+    "tbody:nth-child(2) tr:nth-child(4) td",
+    "#profit-loss"
   );
-
-  const finalNPM = [];
-
-  totalLength = year.length;
-  for (let i = 1; i < totalLength; i++) {
-    finalNPM.push({ [year[i]]: NPM[i][0] });
-  }
-  console.log("NPM : ");
-  console.log(finalNPM);
-  return finalNPM;
 }
 
-function getOPMDetails(html) {
-  const year = [];
-  const OPM = [];
-  html("thead:first-child tr th", "#profit-loss").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html("tbody:nth-child(2) tr:nth-child(4) td", "#profit-loss").each(
-    (i, el) => {
-      const stringValues = html(el)
-        .text()
-        .split("\n")
-        .filter((x) => x.trim() !== "");
-      OPM.push(stringValues);
-    }
+function getNPM(html) {
+  return getDetails(
+    html,
+    "thead:first-child tr th",
+    "tbody:nth-child(2) tr:nth-child(10) td",
+    "#profit-loss"
   );
-
-  const finalOPM = [];
-
-  totalLength = year.length;
-  for (let i = 1; i < totalLength; i++) {
-    finalOPM.push({ [year[i]]: OPM[i][0] });
-  }
-  console.log("OPM : ");
-  console.log(finalOPM);
-  return finalOPM;
 }
 
-function getRevenueDetails(html) {
-  const year = [];
-  const revenue = [];
-  html("thead tr th", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html("tbody tr:nth-child(2) td", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    revenue.push(stringValues);
-  });
-
-  const finalRevenue = [];
-
-  totalLength = year.length;
-  for (let i = 1; i < totalLength; i++) {
-    finalRevenue.push({ [year[i]]: revenue[i][0] });
-  }
-  // console.log("Revenue : ");
-  // console.log(finalRevenue);
-  return finalRevenue;
+function getRevenue(html) {
+  return getDetails(
+    html,
+    "thead tr th",
+    "tbody tr:nth-child(2) td",
+    "#balance-sheet"
+  );
 }
 
-function getBorrowingDetails(html) {
-  const year = [];
-  const borrowing = [];
-  html("thead tr th", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html("tbody tr:nth-child(3) td", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    borrowing.push(stringValues);
-  });
-
-  const finalBorrowing = [];
-
-  totalLength = year.length;
-  for (let i = 1; i < totalLength; i++) {
-    finalBorrowing.push({ [year[i]]: borrowing[i][0] });
-  }
-  // console.log("Borrowing : ");
-  // console.log(finalBorrowing);
-  return finalBorrowing;
+function getBorrowing(html) {
+  return getDetails(
+    html,
+    "thead tr th",
+    "tbody tr:nth-child(3) td",
+    "#balance-sheet"
+  );
 }
 
-function getOtherLiabilitiesDetails(html) {
-  const year = [];
-  const otherLiability = [];
-  html("thead tr th", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html("tbody tr:nth-child(4) td", "#balance-sheet").each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    otherLiability.push(stringValues);
-  });
-
-  const finalOtherLiability = [];
-
-  totalLength = year.length;
-  for (let i = 1; i < totalLength; i++) {
-    finalOtherLiability.push({ [year[i]]: otherLiability[i][0] });
-  }
-  // console.log("Borrowing : ");
-  // console.log(finalBorrowing);
-  return finalOtherLiability;
+function getOtherLiabilities(html) {
+  return getDetails(
+    html,
+    "thead tr th",
+    "tbody tr:nth-child(4) td",
+    "#balance-sheet"
+  );
 }
 
-testHandler("ITC");
+// testHandler("ITC");
