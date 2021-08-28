@@ -42,6 +42,7 @@ function getStockDetails(stockId) {
   }
 
   function getOPMDetails(stockId) {
+    
     return fs.readFile('scratch/itc.html', (err, data) => {
         const html = cheerio.load(data);
 
@@ -62,6 +63,7 @@ function getStockDetails(stockId) {
         for(let i = 1; i < totalLength; i++){
           finalOPM.push({[year[i]]: OPM[i][0]})
         }
+        console.log("OPM : ")
         console.log(finalOPM)
         return finalOPM;
     })
@@ -69,6 +71,7 @@ function getStockDetails(stockId) {
   }
 
   function getNPMDetails(stockId) {
+    
     return fs.readFile('scratch/itc.html', (err, data) => {
         const html = cheerio.load(data);
 
@@ -89,6 +92,7 @@ function getStockDetails(stockId) {
         for(let i = 1; i < totalLength; i++){
           finalNPM.push({[year[i]]: NPM[i][0]})
         }
+        console.log("NPM : ")
         console.log(finalNPM)
         return finalNPM;
     })
