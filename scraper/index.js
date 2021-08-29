@@ -52,7 +52,7 @@ function getStockDetails(stockId) {
       const getFaceValue = () => rawRatios[8][1].trim();
       ratios["MarketCap"] = getMarketCap();
     ratios["PE"] = getPe();
-    ratios["Diviend"] = getDividend();
+    ratios["Dividend"] = getDividend();
     ratios["FaceValue"] = getFaceValue();
     ratios["OPM"] = getOPM(html);
     ratios["NPM"] = getNPM(html);
