@@ -16,7 +16,6 @@ public class StockService {
     }
 
     public Stock getStockDetails(String stockId) {
-        stockRepository.getStockDetails(stockId);
-        return null;
+        return stockRepository.getStockDetails(stockId);
     }
 }

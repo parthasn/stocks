@@ -16,34 +16,25 @@ import java.util.Scanner;
 @Component
 public class StockRepository {
 
-    public void getStockDetails(String stockId) {
+    public Stock getStockDetails(String stockId) {
         final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+        Stock stock = new Stock();
         try {
-            String key_name = "data/TCS";
+            String key_name = "data/" + stockId;
             S3Object o = s3.getObject("stock-ui-bucket", key_name);
             S3ObjectInputStream s3is = o.getObjectContent();
-            FileOutputStream fos = new FileOutputStream(new File("TCS"));
             byte[] read_buf = new byte[1024];
             int read_len = 0;
-
             Scanner s = new Scanner(s3is);
             StringBuilder sb = new StringBuilder();
             while(s.hasNext()){
                 sb.append(s.next());
             }
             String result = sb.toString();
-//            System.out.println(result);
 
             ObjectMapper mapper = new ObjectMapper();
-            Stock stock = mapper.readValue(result, Stock.class);
-            System.out.println(stock);
-
-
-            while ((read_len = s3is.read(read_buf)) > 0) {
-                fos.write(read_buf, 0, read_len);
-            }
+            stock = mapper.readValue(result, Stock.class);
             s3is.close();
-            fos.close();
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
             System.exit(1);
@@ -54,6 +45,7 @@ public class StockRepository {
             System.err.println(e.getMessage());
             System.exit(1);
         }
+        return stock;
     }
 
 }
