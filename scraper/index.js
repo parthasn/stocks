@@ -87,7 +87,8 @@ function getDetails(html, yearSelector, dataSelector, sectionSelector) {
 
   totalLength = year.length;
   for (let i = 1; i < totalLength; i++) {
-    finalData.push({ [year[i]]: data[i][0] });
+    let obj = { "year" : year[i][0], "value" : data[i][0]}
+    finalData.push(obj);
   }
   // console.log(finalData);
   return finalData;
