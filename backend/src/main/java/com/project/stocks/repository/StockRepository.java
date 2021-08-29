@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.stocks.dto.Stock;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -30,7 +32,11 @@ public class StockRepository {
                 sb.append(s.next());
             }
             String result = sb.toString();
-            System.out.println(result);
+//            System.out.println(result);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Stock stock = mapper.readValue(result, Stock.class);
+            System.out.println(stock);
 
 
             while ((read_len = s3is.read(read_buf)) > 0) {
