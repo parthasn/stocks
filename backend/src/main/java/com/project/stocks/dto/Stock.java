@@ -47,7 +47,7 @@ public class Stock {
         this.marketCap = marketCap;
     }
 
-    public String getpE() {
+    public String getPE() {
         return pE;
     }
 
@@ -108,4 +108,6 @@ public class Stock {
                 ", debt=" + debt +
                 '}';
     }
+
+
 }

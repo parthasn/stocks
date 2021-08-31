@@ -1,13 +1,14 @@
 package com.project.stocks.repository;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.project.stocks.dto.Stock;
+import com.project.stocks.service.StockMapper;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -23,29 +24,21 @@ public class StockRepository {
             String key_name = "data/" + stockId;
             S3Object o = s3.getObject("stock-ui-bucket", key_name);
             S3ObjectInputStream s3is = o.getObjectContent();
-            byte[] read_buf = new byte[1024];
-            int read_len = 0;
             Scanner s = new Scanner(s3is);
             StringBuilder sb = new StringBuilder();
             while(s.hasNext()){
                 sb.append(s.next());
             }
             String result = sb.toString();
-
-            ObjectMapper mapper = new ObjectMapper();
-            stock = mapper.readValue(result, Stock.class);
+            stock = StockMapper.map(result);
             s3is.close();
-        } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
-            System.exit(1);
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
+            e.printStackTrace();
         }
         return stock;
     }
-
 }
