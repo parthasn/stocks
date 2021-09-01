@@ -29,5 +29,19 @@ class ScoreBuilderTest {
         assertEquals(3, score.getValue());
     }
 
+    @Test
+    void givenPERatio61ScoreShouldBe2() {
+        Score score = new ScoreBuilder().withPE(61.0).build();
+
+        assertEquals(2, score.getValue());
+    }
+
+    @Test
+    void givenPERatio81ScoreShouldBe1() {
+        Score score = new ScoreBuilder().withPE(81.0).build();
+
+        assertEquals(1, score.getValue());
+    }
+
 
 }

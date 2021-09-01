@@ -11,8 +11,12 @@ public class ScoreBuilder {
             score.addValue(5);
         else if(pe >= 21 && pe <=40)
             score.addValue(4);
-        else
+        else if(pe >= 41 && pe <=60)
             score.addValue(3);
+        else if(pe >= 61 && pe <=80)
+            score.addValue(2);
+        else
+            score.addValue(1);
         return this;
     }
 
