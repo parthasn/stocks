@@ -9,6 +9,14 @@ public class YearInfo {
     @JsonProperty("value")
     private String value;
 
+    public YearInfo(String year, String value) {
+        this.year = year;
+        this.value = value;
+    }
+
+    public YearInfo() {
+    }
+
     public String getYear() {
         return year;
     }
