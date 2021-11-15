@@ -2,28 +2,28 @@ package com.project.stocks.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class YearInfo {
+public class PropertyDetail {
 
-    @JsonProperty("year")
-    private String year;
+    @JsonProperty("unit")
+    public String unit;
 
     @JsonProperty("value")
     private String value;
 
-    public YearInfo(String year, String value) {
-        this.year = year;
+    public PropertyDetail(String unit, String value) {
+        this.unit = unit;
         this.value = value;
     }
 
-    public YearInfo() {
+    public PropertyDetail() {
     }
 
-    public String getYear() {
-        return year;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getValue() {
@@ -37,7 +37,7 @@ public class YearInfo {
     @Override
     public String toString() {
         return "{" +
-                "year='" + year + '\'' +
+                "unit='" + unit + '\'' +
                 ", value='" + value + '\'' +
                 '}';
     }

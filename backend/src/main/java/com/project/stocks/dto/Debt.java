@@ -8,35 +8,35 @@ import java.util.List;
 public class Debt {
 
     @JsonProperty("Revenue")
-    private List<YearInfo> revenueDetails = new ArrayList<>();
+    private YearlyDetail revenueDetails;
 
     @JsonProperty("Borrowings")
-    private List<YearInfo> borrowingsDetails = new ArrayList<>();
+    private YearlyDetail borrowingsDetails;
 
     @JsonProperty("OtherLiabilities")
-    private List<YearInfo> otherLiabilitiesDetails = new ArrayList<>();
+    private YearlyDetail otherLiabilitiesDetails;
 
-    public List<YearInfo> getRevenueDetails() {
+    public YearlyDetail getRevenueDetails() {
         return revenueDetails;
     }
 
-    public void setRevenueDetails(List<YearInfo> revenueDetails) {
+    public void setRevenueDetails(YearlyDetail revenueDetails) {
         this.revenueDetails = revenueDetails;
     }
 
-    public List<YearInfo> getBorrowingsDetails() {
+    public YearlyDetail getBorrowingsDetails() {
         return borrowingsDetails;
     }
 
-    public void setBorrowingsDetails(List<YearInfo> borrowingsDetails) {
+    public void setBorrowingsDetails(YearlyDetail borrowingsDetails) {
         this.borrowingsDetails = borrowingsDetails;
     }
 
-    public List<YearInfo> getOtherLiabilitiesDetails() {
+    public YearlyDetail getOtherLiabilitiesDetails() {
         return otherLiabilitiesDetails;
     }
 
-    public void setOtherLiabilitiesDetails(List<YearInfo> otherLiabilitiesDetails) {
+    public void setOtherLiabilitiesDetails(YearlyDetail otherLiabilitiesDetails) {
         this.otherLiabilitiesDetails = otherLiabilitiesDetails;
     }
 
