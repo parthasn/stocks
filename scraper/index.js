@@ -84,21 +84,37 @@ function getDetails(html, yearSelector, dataSelector, sectionSelector) {
   });
 
   const finalData = [];
-
   totalLength = year.length;
+  let isTTMPresent=false
+  let TTMValue=''
   for (let i = 1; i < totalLength; i++) {
-    let value = filter(data[i][0])
-    let obj = { "year" : year[i][0], "value" : value}
+    let value = filter(data[i][0]); 
+    if(year[i][0] === 'TTM'){
+      isTTMPresent=true
+      TTMValue=value
+      continue
+    }
+    let obj = { "year" : extractYear(year[i][0]), "value" : parseInt(value)}
     finalData.push(obj);
   }
-  // console.log(finalData);
-  return finalData;
+  let result = {}
+  if (isTTMPresent)
+    result = {data: finalData, TTM: TTMValue}
+  else
+    result = {data: finalData}
+  // console.log(result);
+  return result;
+}
+
+function extractYear(input){
+  const yearOnlyPattern = /[0-9]+$/;
+  return parseInt(String(input).match(yearOnlyPattern))
 }
 
 function filter(value){
   value = value.replace('%', '')
   value = value.replace(',', '')
-  return value
+  return parseInt(value)
 }
 
 function getOPM(html) {
@@ -108,7 +124,7 @@ function getOPM(html) {
     "tbody:nth-child(2) tr:nth-child(4) td",
     "#profit-loss"
   );
-  OPMDetails = {unit : "%" , data : OPMDetails}
+  OPMDetails = {...OPMDetails, unit : "%"}
   return OPMDetails;
 }
 
@@ -119,7 +135,7 @@ function getNPM(html) {
     "tbody:nth-child(2) tr:nth-child(10) td",
     "#profit-loss"
   );
-  NPMDetails = {unit : "Cr" , data : NPMDetails}
+  NPMDetails = {...NPMDetails, unit : "Cr"}
   return NPMDetails
 }
 
@@ -131,7 +147,7 @@ function getRevenue(html) {
     "#balance-sheet",
     "Revenue"
   );
-  revenue = {unit : "Cr" , data : revenue}
+  revenue = {...revenue, unit : "Cr"}
   return revenue
 }
 
@@ -142,7 +158,7 @@ function getBorrowing(html) {
     "tbody tr:nth-child(3) td",
     "#balance-sheet"
   );
-  borrowing = {unit : "Cr" , data : borrowing}
+  borrowing = {...borrowing, unit : "Cr"}
   return borrowing
 }
 
@@ -153,7 +169,7 @@ function getOtherLiabilities(html) {
     "tbody tr:nth-child(4) td",
     "#balance-sheet"
   );
-  otherLiability = {unit : "Cr" , data : otherLiability}
+  otherLiability = {...otherLiability, unit : "Cr"}
   return otherLiability
 }
 

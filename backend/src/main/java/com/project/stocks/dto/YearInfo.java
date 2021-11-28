@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class YearInfo {
 
     @JsonProperty("year")
-    private String year;
+    private Integer year;
 
     @JsonProperty("value")
-    private String value;
+    private Integer value;
 
-    public YearInfo(String year, String value) {
+    public YearInfo(Integer year, Integer value) {
         this.year = year;
         this.value = value;
     }
@@ -18,23 +18,22 @@ public class YearInfo {
     public YearInfo() {
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
-    @Override
     public String toString() {
         return "{" +
                 "year='" + year + '\'' +
