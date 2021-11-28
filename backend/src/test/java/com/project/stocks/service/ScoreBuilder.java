@@ -8,6 +8,8 @@ import java.time.Year;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScoreBuilder {
 
@@ -31,8 +33,16 @@ public class ScoreBuilder {
     }
 
     public ScoreBuilder withOPM(List<YearInfo> opmList) {
-
-         
+        List<YearInfo> last6YearsOPMList = opmList.stream()
+                .sorted((a,b) -> b.getYear()-a.getYear())
+                .limit(6)
+                .collect(Collectors.toList());
+        for(int i = 1; i < last6YearsOPMList.size(); i++){
+            int presentYear = last6YearsOPMList.get(i-1).getValue();
+            int previousYear = last6YearsOPMList.get(i).getValue();
+            if(presentYear > previousYear)
+                score.addValue(1);
+        }
         return this;
     }
 }

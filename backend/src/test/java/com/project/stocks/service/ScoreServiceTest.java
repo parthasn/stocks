@@ -51,12 +51,12 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe5ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,5));
-        opmList.add(new YearInfo(0,6));
-        opmList.add(new YearInfo(0,7));
+        opmList.add(new YearInfo(2010,2));
+        opmList.add(new YearInfo(2011,3));
+        opmList.add(new YearInfo(2012,4));
+        opmList.add(new YearInfo(2013,5));
+        opmList.add(new YearInfo(2014,6));
+        opmList.add(new YearInfo(2015,7));
         Score score = new ScoreBuilder().withOPM(opmList).build();
         assertEquals(5, score.getValue());
     }
@@ -64,12 +64,12 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe4ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,5));
-        opmList.add(new YearInfo(0,6));
-        opmList.add(new YearInfo(0,7));
+        opmList.add(new YearInfo(2010,2));
+        opmList.add(new YearInfo(2011,4));
+        opmList.add(new YearInfo(2012,3));
+        opmList.add(new YearInfo(2013,5));
+        opmList.add(new YearInfo(2014,6));
+        opmList.add(new YearInfo(2015,7));
         Score score = new ScoreBuilder().withOPM(opmList).build();
 
         assertEquals(4, score.getValue());
@@ -78,12 +78,12 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe3ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,5));
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,1));
+        opmList.add(new YearInfo(2010,2));
+        opmList.add(new YearInfo(2011,3));
+        opmList.add(new YearInfo(2012,4));
+        opmList.add(new YearInfo(2013,5));
+        opmList.add(new YearInfo(2014,2));
+        opmList.add(new YearInfo(2015,1));
         Score score = new ScoreBuilder().withOPM(opmList).build();
 
         assertEquals(3, score.getValue());
@@ -92,12 +92,12 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe2ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,1));
+        opmList.add(new YearInfo(2010,2));
+        opmList.add(new YearInfo(2011,3));
+        opmList.add(new YearInfo(2012,4));
+        opmList.add(new YearInfo(2013,3));
+        opmList.add(new YearInfo(2014,2));
+        opmList.add(new YearInfo(2015,1));
         Score score = new ScoreBuilder().withOPM(opmList).build();
 
         assertEquals(2, score.getValue());
@@ -106,12 +106,12 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe1ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,5));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,1));
+        opmList.add(new YearInfo(2010,4));
+        opmList.add(new YearInfo(2011,5));
+        opmList.add(new YearInfo(2012,4));
+        opmList.add(new YearInfo(2013,3));
+        opmList.add(new YearInfo(2014,2));
+        opmList.add(new YearInfo(2015,1));
         Score score = new ScoreBuilder().withOPM(opmList).build();
 
         assertEquals(1, score.getValue());
@@ -120,12 +120,13 @@ class ScoreBuilderTest {
     @Test
     void givenOPMListScoreShouldBe0ForLast6Years() {
         List<YearInfo> opmList = new ArrayList<>();
-        opmList.add(new YearInfo(0,6));
-        opmList.add(new YearInfo(0,5));
-        opmList.add(new YearInfo(0,4));
-        opmList.add(new YearInfo(0,3));
-        opmList.add(new YearInfo(0,2));
-        opmList.add(new YearInfo(0,1));
+        opmList.add(new YearInfo(2009,5));
+        opmList.add(new YearInfo(2010,6));
+        opmList.add(new YearInfo(2011,5));
+        opmList.add(new YearInfo(2012,4));
+        opmList.add(new YearInfo(2013,3));
+        opmList.add(new YearInfo(2014,2));
+        opmList.add(new YearInfo(2015,1));
         Score score = new ScoreBuilder().withOPM(opmList).build();
 
         assertEquals(0, score.getValue());
