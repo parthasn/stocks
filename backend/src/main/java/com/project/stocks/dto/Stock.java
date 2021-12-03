@@ -11,25 +11,40 @@ public class Stock {
     private String id;
 
     @JsonProperty("MarketCap")
-    private String marketCap;
+    private PropertyDetail marketCap;
 
     @JsonProperty("PE")
-    private String pE;
+    private PropertyDetail pE;
 
     @JsonProperty("FaceValue")
-    private String faceValue;
+    private PropertyDetail faceValue;
 
     @JsonProperty("Dividend")
-    private String dividend;
+    private PropertyDetail dividend;
 
     @JsonProperty("OPM")
-    private List<YearInfo> opmDetails = new ArrayList<>();
+    private YearlyDetail opmDetails;
 
     @JsonProperty("NPM")
-    private List<YearInfo> npmDetails = new ArrayList<>();
+    private YearlyDetail npmDetails;
 
     @JsonProperty("Debt")
     private Debt debt;
+
+    public Stock(String id, PropertyDetail marketCap, PropertyDetail pE, PropertyDetail faceValue,
+                 PropertyDetail dividend, YearlyDetail opmDetails, YearlyDetail npmDetails, Debt debt) {
+        this.id = id;
+        this.marketCap = marketCap;
+        this.pE = pE;
+        this.faceValue = faceValue;
+        this.dividend = dividend;
+        this.opmDetails = opmDetails;
+        this.npmDetails = npmDetails;
+        this.debt = debt;
+    }
+
+    public Stock() {
+    }
 
     public String getId() {
         return id;
@@ -39,51 +54,51 @@ public class Stock {
         this.id = id;
     }
 
-    public String getMarketCap() {
+    public PropertyDetail getMarketCap() {
         return marketCap;
     }
 
-    public void setMarketCap(String marketCap) {
+    public void setMarketCap(PropertyDetail marketCap) {
         this.marketCap = marketCap;
     }
 
-    public String getPE() {
+    public PropertyDetail getPE() {
         return pE;
     }
 
-    public void setpE(String pE) {
+    public void setPE(PropertyDetail pE) {
         this.pE = pE;
     }
 
-    public String getFaceValue() {
+    public PropertyDetail getFaceValue() {
         return faceValue;
     }
 
-    public void setFaceValue(String faceValue) {
+    public void setFaceValue(PropertyDetail faceValue) {
         this.faceValue = faceValue;
     }
 
-    public String getDividend() {
+    public PropertyDetail getDividend() {
         return dividend;
     }
 
-    public void setDividend(String dividend) {
+    public void setDividend(PropertyDetail dividend) {
         this.dividend = dividend;
     }
 
-    public List<YearInfo> getOpmDetails() {
+    public YearlyDetail getOpmDetails() {
         return opmDetails;
     }
 
-    public void setOpmDetails(List<YearInfo> opmDetails) {
+    public void setOpmDetails(YearlyDetail opmDetails) {
         this.opmDetails = opmDetails;
     }
 
-    public List<YearInfo> getNpmDetails() {
+    public YearlyDetail getNpmDetails() {
         return npmDetails;
     }
 
-    public void setNpmDetails(List<YearInfo> npmDetails) {
+    public void setNpmDetails(YearlyDetail npmDetails) {
         this.npmDetails = npmDetails;
     }
 
