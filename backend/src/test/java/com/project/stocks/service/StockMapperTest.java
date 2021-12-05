@@ -2,6 +2,7 @@ package com.project.stocks.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.stocks.dto.Stock;
+import com.project.stocks.dto.Unit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +20,33 @@ class StockMapperTest {
     }
 
     @Test
-    void testMapMethodInCaseValidDataShouldReturnStockObjectWithIdTCSandPEValue39() throws JsonProcessingException {
-        String input = "{\"stockId\":\"TCS\",\"MarketCap\":\"1,376,103\",\"PE\":\"39.0\",\"Dividend\":\"1.02%\",\"FaceValue\":\"1.00\",\"OPM\":[{\"year\":\"Mar 2010\",\"value\":\"28%\"},{\"year\":\"Mar 2011\",\"value\":\"30%\"},{\"year\":\"Mar 2012\",\"value\":\"30%\"},{\"year\":\"Mar 2013\",\"value\":\"29%\"},{\"year\":\"Mar 2014\",\"value\":\"31%\"},{\"year\":\"Mar 2015\",\"value\":\"26%\"},{\"year\":\"Mar 2016\",\"value\":\"28%\"},{\"year\":\"Mar 2017\",\"value\":\"27%\"},{\"year\":\"Mar 2018\",\"value\":\"26%\"},{\"year\":\"Mar 2019\",\"value\":\"27%\"},{\"year\":\"Mar 2020\",\"value\":\"27%\"},{\"year\":\"Mar 2021\",\"value\":\"28%\"},{\"year\":\"TTM\",\"value\":\"29%\"}],\"NPM\":[{\"year\":\"Mar 2010\",\"value\":\"7,001\"},{\"year\":\"Mar 2011\",\"value\":\"9,068\"},{\"year\":\"Mar 2012\",\"value\":\"10,413\"},{\"year\":\"Mar 2013\",\"value\":\"13,917\"},{\"year\":\"Mar 2014\",\"value\":\"19,164\"},{\"year\":\"Mar 2015\",\"value\":\"19,852\"},{\"year\":\"Mar 2016\",\"value\":\"24,270\"},{\"year\":\"Mar 2017\",\"value\":\"26,289\"},{\"year\":\"Mar 2018\",\"value\":\"25,826\"},{\"year\":\"Mar 2019\",\"value\":\"31,472\"},{\"year\":\"Mar 2020\",\"value\":\"32,340\"},{\"year\":\"Mar 2021\",\"value\":\"32,430\"},{\"year\":\"TTM\",\"value\":\"34,430\"}],\"Debt\":{\"Revenue\":[{\"year\":\"Mar 2010\",\"value\":\"18,171\"},{\"year\":\"Mar 2011\",\"value\":\"24,209\"},{\"year\":\"Mar 2012\",\"value\":\"29,284\"},{\"year\":\"Mar 2013\",\"value\":\"38,350\"},{\"year\":\"Mar 2014\",\"value\":\"48,999\"},{\"year\":\"Mar 2015\",\"value\":\"50,439\"},{\"year\":\"Mar 2016\",\"value\":\"70,875\"},{\"year\":\"Mar 2017\",\"value\":\"86,017\"},{\"year\":\"Mar 2018\",\"value\":\"84,937\"},{\"year\":\"Mar 2019\",\"value\":\"89,071\"},{\"year\":\"Mar 2020\",\"value\":\"83,751\"},{\"year\":\"Mar 2021\",\"value\":\"86,063\"}],\"Borrowings\":[{\"year\":\"Mar 2010\",\"value\":\"103\"},{\"year\":\"Mar 2011\",\"value\":\"75\"},{\"year\":\"Mar 2012\",\"value\":\"127\"},{\"year\":\"Mar 2013\",\"value\":\"232\"},{\"year\":\"Mar 2014\",\"value\":\"297\"},{\"year\":\"Mar 2015\",\"value\":\"358\"},{\"year\":\"Mar 2016\",\"value\":\"245\"},{\"year\":\"Mar 2017\",\"value\":\"289\"},{\"year\":\"Mar 2018\",\"value\":\"247\"},{\"year\":\"Mar 2019\",\"value\":\"62\"},{\"year\":\"Mar 2020\",\"value\":\"8,174\"},{\"year\":\"Mar 2021\",\"value\":\"7,795\"}],\"OtherLiabilities\":[{\"year\":\"Mar 2010\",\"value\":\"8,856\"},{\"year\":\"Mar 2011\",\"value\":\"8,092\"},{\"year\":\"Mar 2012\",\"value\":\"11,551\"},{\"year\":\"Mar 2013\",\"value\":\"13,154\"},{\"year\":\"Mar 2014\",\"value\":\"17,337\"},{\"year\":\"Mar 2015\",\"value\":\"22,325\"},{\"year\":\"Mar 2016\",\"value\":\"16,974\"},{\"year\":\"Mar 2017\",\"value\":\"15,830\"},{\"year\":\"Mar 2018\",\"value\":\"19,751\"},{\"year\":\"Mar 2019\",\"value\":\"24,393\"},{\"year\":\"Mar 2020\",\"value\":\"27,820\"},{\"year\":\"Mar 2021\",\"value\":\"35,764\"}]}}";
+    void testMapMethodInCaseValidDataShouldReturnStockObjectWithValidValues() throws JsonProcessingException {
+        String input = "{\"stockId\":\"INFY\",\"MarketCap\":{\"unit\":\"Cr\",\"value\":711430},\"PE\":{\"unit\":\"\",\"value\":34}" +
+                ",\"Dividend\":{\"unit\":\"%\",\"value\":1},\"FaceValue\":{\"unit\":\"\",\"value\":5},\"OPM\":{\"data\":" +
+                "[{\"year\":2010,\"value\":34},{\"year\":2011,\"value\":33},{\"year\":2012,\"value\":32},{\"year\":2013,\"value\":29}," +
+                "{\"year\":2014,\"value\":27},{\"year\":2015,\"value\":28},{\"year\":2016,\"value\":27},{\"year\":2017,\"value\":27}," +
+                "{\"year\":2018,\"value\":27},{\"year\":2019,\"value\":24},{\"year\":2020,\"value\":25},{\"year\":2021,\"value\":28}]," +
+                "\"TTM\":27,\"unit\":\"%\"},\"NPM\":{\"data\":[{\"year\":2010,\"value\":6266},{\"year\":2011,\"value\":6835},{\"year\":2012," +
+                "\"value\":8332},{\"year\":2013,\"value\":9429},{\"year\":2014,\"value\":10656},{\"year\":2015,\"value\":12372},{\"year\":2016," +
+                "\"value\":13489},{\"year\":2017,\"value\":14353},{\"year\":2018,\"value\":16029},{\"year\":2019,\"value\":15404},{\"year\":2020," +
+                "\"value\":16594},{\"year\":2021,\"value\":19351}],\"TTM\":20889,\"unit\":\"Cr\"},\"Debt\":{\"Revenue\":{\"data\":[{\"year\":2010," +
+                "\"value\":22763},{\"year\":2011,\"value\":25690},{\"year\":2012,\"value\":31046},{\"year\":2013,\"value\":37708},{\"year\":2014,\"value" +
+                "\":44244},{\"year\":2015,\"value\":50164},{\"year\":2016,\"value\":60600},{\"year\":2017,\"value\":67838},{\"year\":2018,\"value\":63835}," +
+                "{\"year\":2019,\"value\":62778},{\"year\":2020,\"value\":63328},{\"year\":2021,\"value\":74227},{\"year\":2021,\"value\":67842}]," +
+                "\"unit\":\"Cr\"},\"Borrowings\":{\"data\":[{\"year\":2010,\"value\":0},{\"year\":2011,\"value\":0},{\"year\":2012,\"value\":0}," +
+                "{\"year\":2013,\"value\":0},{\"year\":2014,\"value\":0},{\"year\":2015,\"value\":0},{\"year\":2016,\"value\":0},{\"year\":2017,\"value\":0}," +
+                "{\"year\":2018,\"value\":0},{\"year\":2019,\"value\":0},{\"year\":2020,\"value\":4633},{\"year\":2021,\"value\":5325},{\"year\":2021,\"value\":5146}]," +
+                "\"unit\":\"Cr\"},\"OtherLiabilities\":{\"data\":[{\"year\":2010,\"value\":4455},{\"year\":2011,\"value\":5317},{\"year\":2012,\"value\":7025}," +
+                "{\"year\":2013,\"value\":8281},{\"year\":2014,\"value\":12436},{\"year\":2015,\"value\":15553},{\"year\":2016,\"value\":13354},{\"year\":2017" +
+                ",\"value\":14166},{\"year\":2018,\"value\":14426},{\"year\":2019,\"value\":19118},{\"year\":2020,\"value\":21717},{\"year\":2021,\"value\":25835}," +
+                "{\"year\":2021,\"value\":31025}],\"unit\":\"Cr\"}}}";
+
         Stock stock = StockMapper.map(input);
-        assertEquals("TCS", stock.getId());
-        assertEquals("39.0", stock.getPE());
+
+        assertEquals("INFY", stock.getId());
+        assertEquals(34, stock.getPE().getValue());
+        assertEquals(Unit.Percentage, stock.getOpmDetails().getUnit());
+        assertEquals(27, stock.getOpmDetails().getTtm());
+        assertEquals(Unit.Crore, stock.getNpmDetails().getUnit());
     }
 }
