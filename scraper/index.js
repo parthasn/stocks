@@ -1,32 +1,12 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3();
-
-const print = console.log;
+const util = require("./parseDetails.js")
+const aws = require("./aws")
 
 var testHandler = (exports.handler = async function (event, context) {
   const ratios = await getStockDetails(event);
-  await saveToS3(ratios);
-  // return context.logStreamName
+  await aws.saveToS3(ratios);
 });
-
-async function saveToS3(data) {
-  console.log("Inside saveToS3() ");
-  const s3Bucket = "stock-ui-bucket";
-  const objectName = "data/" + data.stockId;
-  const objectType = "application/json";
-
-  const params = {
-    Bucket: s3Bucket,
-    Key: objectName,
-    Body: JSON.stringify(data),
-    ContentType: objectType,
-  };
-
-  const result = await s3.putObject(params).promise();
-  console.log("saveToS3() => Successfully saved to S3 !!! ");
-}
 
 function getStockDetails(stockId) {
   return axios
@@ -46,10 +26,10 @@ function getStockDetails(stockId) {
       });
 
       ratios = { stockId: stockId };
-      const getMarketCap = () => filter(rawRatios[0][1].trim());
-      const getPe = () => filter(rawRatios[3][0].trim());
-      const getDividend = () => filter(rawRatios[5][0].trim());
-      const getFaceValue = () => filter(rawRatios[8][1].trim());
+      const getMarketCap = () => util.parse(rawRatios[0][1].trim());
+      const getPe = () => util.parse(rawRatios[3][0].trim());
+      const getDividend = () => util.parse(rawRatios[5][0].trim());
+      const getFaceValue = () => util.parse(rawRatios[8][1].trim());
       ratios["MarketCap"] = { unit : "Cr", value : getMarketCap() };
       ratios["PE"] = { unit : "", value : getPe() };
       ratios["Dividend"] = { unit : "%", value : getDividend() }
@@ -65,60 +45,8 @@ function getStockDetails(stockId) {
       });
 }
 
-function getDetails(html, yearSelector, dataSelector, sectionSelector) {
-  const year = [];
-  const data = [];
-  html(yearSelector, sectionSelector).each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html(dataSelector, sectionSelector).each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    data.push(stringValues);
-  });
-
-  const finalData = [];
-  totalLength = year.length;
-  let isTTMPresent=false
-  let TTMValue=''
-  for (let i = 1; i < totalLength; i++) {
-    let value = filter(data[i][0]); 
-    if(year[i][0] === 'TTM'){
-      isTTMPresent=true
-      TTMValue=value
-      continue
-    }
-    let obj = { "year" : extractYear(year[i][0]), "value" : parseInt(value)}
-    finalData.push(obj);
-  }
-  let result = {}
-  if (isTTMPresent)
-    result = {data: finalData, TTM: TTMValue}
-  else
-    result = {data: finalData}
-  // console.log(result);
-  return result;
-}
-
-function extractYear(input){
-  const yearOnlyPattern = /[0-9]+$/;
-  return parseInt(String(input).match(yearOnlyPattern))
-}
-
-function filter(value){
-  value = value.replace('%', '')
-  value = value.replace(',', '')
-  return parseInt(value)
-}
-
 function getOPM(html) {
-  let OPMDetails = getDetails(
+  let OPMDetails = util.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(4) td",
@@ -129,7 +57,7 @@ function getOPM(html) {
 }
 
 function getNPM(html) {
-  let NPMDetails = getDetails(
+  let NPMDetails = util.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(10) td",
@@ -140,7 +68,7 @@ function getNPM(html) {
 }
 
 function getRevenue(html) {
-  let revenue = getDetails(
+  let revenue = util.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(2) td",
@@ -152,7 +80,7 @@ function getRevenue(html) {
 }
 
 function getBorrowing(html) {
-  let borrowing = getDetails(
+  let borrowing = util.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(3) td",
@@ -163,7 +91,7 @@ function getBorrowing(html) {
 }
 
 function getOtherLiabilities(html) {
-  let otherLiability = getDetails(
+  let otherLiability = util.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(4) td",
@@ -173,4 +101,4 @@ function getOtherLiabilities(html) {
   return otherLiability
 }
 
-testHandler("INFY");
+// testHandler("TCS");
