@@ -37,7 +37,7 @@ public class ScoreBuilder {
         for(int i = 1; i < last6YearsOPMList.size(); i++){
             int presentYear = last6YearsOPMList.get(i-1).getValue();
             int previousYear = last6YearsOPMList.get(i).getValue();
-            if(presentYear > previousYear)
+            if(presentYear - previousYear > 0)
                 score.addValue(1);
         }
         return this;

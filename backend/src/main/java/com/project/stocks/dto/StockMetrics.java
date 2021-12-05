@@ -2,7 +2,7 @@ package com.project.stocks.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PropertyDetail {
+public class StockMetrics {
 
     @JsonProperty("unit")
     public Unit unit;
@@ -10,12 +10,12 @@ public class PropertyDetail {
     @JsonProperty("value")
     private Integer value;
 
-    public PropertyDetail(Unit unit, Integer value) {
+    public StockMetrics(Unit unit, Integer value) {
         this.unit = unit;
         this.value = value;
     }
 
-    public PropertyDetail() {
+    public StockMetrics() {
     }
 
     public Unit getUnit() {
