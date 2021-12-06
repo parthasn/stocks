@@ -3,17 +3,19 @@ package com.project.stocks.service;
 
 import com.project.stocks.dto.YearInfo;
 import com.project.stocks.model.Score;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ScoreBuilder {
 
     private final String Increasing = "Increasing";
     private final String Decreasing = "Decreasing";
 
     private Score score = new Score();
-    public ScoreBuilder withPE(double pe) {
+    public ScoreBuilder withPE(Integer pe) {
         if(pe >= 1 && pe <=20)
             score.addValue(5);
         else if(pe >= 21 && pe <=40)
