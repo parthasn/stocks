@@ -1,6 +1,7 @@
 package com.project.stocks.controller;
 
 import com.project.stocks.dto.Stock;
+import com.project.stocks.model.Score;
 import com.project.stocks.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,11 @@ public class StocksController {
     @GetMapping(value = "/{stockId}")
     private Stock getStockDetails(@PathVariable(value = "stockId") String stockId) {
         return stockService.getStockDetails(stockId);
+    }
+
+    @GetMapping(value = "/{stockId}/score")
+    private Score calculateScore(@PathVariable(value = "stockId") String stockId) {
+        return stockService.calculateScore(stockId);
     }
 
 }
