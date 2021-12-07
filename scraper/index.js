@@ -1,6 +1,6 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const util = require("./parseDetails.js")
+const util = require("./parseHTML.js")
 const aws = require("./aws")
 
 var testHandler = (exports.handler = async function (event, context) {
