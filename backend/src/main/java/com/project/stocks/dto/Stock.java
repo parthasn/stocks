@@ -8,16 +8,16 @@ public class Stock {
     private String id;
 
     @JsonProperty("MarketCap")
-    private StockMetrics marketCap;
+    private StockMetric marketCap;
 
     @JsonProperty("PE")
-    private StockMetrics pE;
+    private StockMetric pE;
 
     @JsonProperty("FaceValue")
-    private StockMetrics faceValue;
+    private StockMetric faceValue;
 
     @JsonProperty("Dividend")
-    private StockMetrics dividend;
+    private StockMetric dividend;
 
     @JsonProperty("OPM")
     private YearlyDetail opmDetails;
@@ -28,8 +28,8 @@ public class Stock {
     @JsonProperty("Debt")
     private Debt debt;
 
-    public Stock(String id, StockMetrics marketCap, StockMetrics pE, StockMetrics faceValue,
-                 StockMetrics dividend, YearlyDetail opmDetails, YearlyDetail npmDetails, Debt debt) {
+    public Stock(String id, StockMetric marketCap, StockMetric pE, StockMetric faceValue,
+                 StockMetric dividend, YearlyDetail opmDetails, YearlyDetail npmDetails, Debt debt) {
         this.id = id;
         this.marketCap = marketCap;
         this.pE = pE;
@@ -51,35 +51,35 @@ public class Stock {
         this.id = id;
     }
 
-    public StockMetrics getMarketCap() {
+    public StockMetric getMarketCap() {
         return marketCap;
     }
 
-    public void setMarketCap(StockMetrics marketCap) {
+    public void setMarketCap(StockMetric marketCap) {
         this.marketCap = marketCap;
     }
 
-    public StockMetrics getPE() {
+    public StockMetric getPE() {
         return pE;
     }
 
-    public void setPE(StockMetrics pE) {
+    public void setPE(StockMetric pE) {
         this.pE = pE;
     }
 
-    public StockMetrics getFaceValue() {
+    public StockMetric getFaceValue() {
         return faceValue;
     }
 
-    public void setFaceValue(StockMetrics faceValue) {
+    public void setFaceValue(StockMetric faceValue) {
         this.faceValue = faceValue;
     }
 
-    public StockMetrics getDividend() {
+    public StockMetric getDividend() {
         return dividend;
     }
 
-    public void setDividend(StockMetrics dividend) {
+    public void setDividend(StockMetric dividend) {
         this.dividend = dividend;
     }
 
