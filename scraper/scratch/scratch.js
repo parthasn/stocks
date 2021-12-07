@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 const fs = require("fs");
-const util = require("../parseDetails")
+const parser = require("../parseDetails")
 
 const print = console.log;
 
@@ -27,10 +27,10 @@ function getStockDetails(stockId) {
     });
     // print(rawRatios)
     ratios = {};
-    const getMarketCap = () => util.parse(rawRatios[0][1].trim());
-    const getPe = () => util.parse(rawRatios[3][0].trim());
-    const getDividend = () => util.parse(rawRatios[5][0].trim());
-    const getFaceValue = () => util.parse(rawRatios[8][1].trim());
+    const getMarketCap = () => parser.parse(rawRatios[0][1].trim());
+    const getPe = () => parser.parse(rawRatios[3][0].trim());
+    const getDividend = () => parser.parse(rawRatios[5][0].trim());
+    const getFaceValue = () => parser.parse(rawRatios[8][1].trim());
     ratios["MarketCap"] = { unit : "Cr", value : getMarketCap() };
     ratios["PE"] = { unit : "", value : getPe() };
     ratios["Dividend"] = { unit : "%", value : getDividend() }
@@ -48,7 +48,7 @@ function getStockDetails(stockId) {
 }
 
 function getOPM(html) {
-  let OPMDetails = util.getDetails(
+  let OPMDetails = parser.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(4) td",
@@ -59,7 +59,7 @@ function getOPM(html) {
 }
 
 function getNPM(html) {
-  let NPMDetails = util.getDetails(
+  let NPMDetails = parser.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(10) td",
@@ -70,7 +70,7 @@ function getNPM(html) {
 }
 
 function getRevenue(html) {
-  let revenue = util.getDetails(
+  let revenue = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(2) td",
@@ -82,7 +82,7 @@ function getRevenue(html) {
 }
 
 function getBorrowing(html) {
-  let borrowing = util.getDetails(
+  let borrowing = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(3) td",
@@ -93,7 +93,7 @@ function getBorrowing(html) {
 }
 
 function getOtherLiabilities(html) {
-  let otherLiability = util.getDetails(
+  let otherLiability = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(4) td",

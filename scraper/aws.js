@@ -1,9 +1,8 @@
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
-const util = require("./parseHTML")
 
 async function saveToS3(data) {
-    util.print("Inside saveToS3() ");
+    console.log("Inside saveToS3() ");
     const s3Bucket = "stock-ui-bucket";
     const objectName = "data/" + data.stockId;
     const objectType = "application/json";
@@ -16,7 +15,7 @@ async function saveToS3(data) {
     };
   
     const result = await s3.putObject(params).promise();
-    util.print("saveToS3() => Successfully saved to S3 !!! ");
+    console.log("saveToS3() => Successfully saved to S3 !!! ");
 }
 
 module.exports = {saveToS3};
