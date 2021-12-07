@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
-const util = require("./parseDetails")
+const util = require("./parseHTML")
 
 async function saveToS3(data) {
     util.print("Inside saveToS3() ");
