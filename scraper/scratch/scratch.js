@@ -1,15 +1,13 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 const fs = require("fs");
+const parser = require("../parseDetails")
 
 const print = console.log;
 
 var testHandler = (exports.handler = async function (event, context) {
-  // print("EVENT: \n" + JSON.stringify(event, null, 2))
   const ratios = await getStockDetails(event);
-  // getBorrowingDetails(event)
   console.log(ratios)
-  // return context.logStreamName
 });
 
 function getStockDetails(stockId) {
@@ -29,10 +27,10 @@ function getStockDetails(stockId) {
     });
     // print(rawRatios)
     ratios = {};
-    const getMarketCap = () => filter(rawRatios[0][1].trim());
-    const getPe = () => filter(rawRatios[3][0].trim());
-    const getDividend = () => filter(rawRatios[5][0].trim());
-    const getFaceValue = () => filter(rawRatios[8][1].trim());
+    const getMarketCap = () => parser.parse(rawRatios[0][1].trim());
+    const getPe = () => parser.parse(rawRatios[3][0].trim());
+    const getDividend = () => parser.parse(rawRatios[5][0].trim());
+    const getFaceValue = () => parser.parse(rawRatios[8][1].trim());
     ratios["MarketCap"] = { unit : "Cr", value : getMarketCap() };
     ratios["PE"] = { unit : "", value : getPe() };
     ratios["Dividend"] = { unit : "%", value : getDividend() }
@@ -49,61 +47,8 @@ function getStockDetails(stockId) {
   });
 }
 
-function getDetails(html, yearSelector, dataSelector, sectionSelector) {
-  const year = [];
-  const data = [];
-  html(yearSelector, sectionSelector).each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    year.push(stringValues);
-  });
-  html(dataSelector, sectionSelector).each((i, el) => {
-    const stringValues = html(el)
-      .text()
-      .split("\n")
-      .filter((x) => x.trim() !== "");
-    data.push(stringValues);
-  });
-
-  const finalData = [];
-
-  totalLength = year.length;
-  let isTTMPresent=false
-  let TTMValue=''
-  for (let i = 1; i < totalLength; i++) {
-    let value = filter(data[i][0]); 
-    if(year[i][0] === 'TTM'){
-      isTTMPresent=true
-      TTMValue=value
-      continue
-    }
-    let obj = { "year" : extractYear(year[i][0]), "value" : parseInt(value)}
-    finalData.push(obj);
-  }
-  let result = {}
-  if (isTTMPresent)
-    result = {data: finalData, TTM: TTMValue}
-  else
-    result = {data: finalData}
-  //console.log(result);
-  return result;
-}
-
-function extractYear(input){
-  const yearOnlyPattern = /[0-9]+$/;
-  return parseInt(String(input).match(yearOnlyPattern))
-}
-
-function filter(value){
-  value = value.replace('%', '')
-  value = value.replace(',', '')
-  return parseInt(value)
-}
-
 function getOPM(html) {
-  let OPMDetails = getDetails(
+  let OPMDetails = parser.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(4) td",
@@ -114,7 +59,7 @@ function getOPM(html) {
 }
 
 function getNPM(html) {
-  let NPMDetails = getDetails(
+  let NPMDetails = parser.getDetails(
     html,
     "thead:first-child tr th",
     "tbody:nth-child(2) tr:nth-child(10) td",
@@ -125,7 +70,7 @@ function getNPM(html) {
 }
 
 function getRevenue(html) {
-  let revenue = getDetails(
+  let revenue = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(2) td",
@@ -137,7 +82,7 @@ function getRevenue(html) {
 }
 
 function getBorrowing(html) {
-  let borrowing = getDetails(
+  let borrowing = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(3) td",
@@ -148,7 +93,7 @@ function getBorrowing(html) {
 }
 
 function getOtherLiabilities(html) {
-  let otherLiability = getDetails(
+  let otherLiability = parser.getDetails(
     html,
     "thead tr th",
     "tbody tr:nth-child(4) td",

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum Unit {
-    Cr("Cr"), Percentage("%"), Blank("");
+    Crore("Cr"), Percentage("%"), Blank("");
 
     private String unit;
 

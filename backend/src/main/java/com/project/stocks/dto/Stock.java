@@ -2,25 +2,22 @@ package com.project.stocks.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Stock {
 
     @JsonProperty("stockId")
     private String id;
 
     @JsonProperty("MarketCap")
-    private PropertyDetail marketCap;
+    private StockMetric marketCap;
 
     @JsonProperty("PE")
-    private PropertyDetail pE;
+    private StockMetric pE;
 
     @JsonProperty("FaceValue")
-    private PropertyDetail faceValue;
+    private StockMetric faceValue;
 
     @JsonProperty("Dividend")
-    private PropertyDetail dividend;
+    private StockMetric dividend;
 
     @JsonProperty("OPM")
     private YearlyDetail opmDetails;
@@ -31,8 +28,8 @@ public class Stock {
     @JsonProperty("Debt")
     private Debt debt;
 
-    public Stock(String id, PropertyDetail marketCap, PropertyDetail pE, PropertyDetail faceValue,
-                 PropertyDetail dividend, YearlyDetail opmDetails, YearlyDetail npmDetails, Debt debt) {
+    public Stock(String id, StockMetric marketCap, StockMetric pE, StockMetric faceValue,
+                 StockMetric dividend, YearlyDetail opmDetails, YearlyDetail npmDetails, Debt debt) {
         this.id = id;
         this.marketCap = marketCap;
         this.pE = pE;
@@ -54,35 +51,35 @@ public class Stock {
         this.id = id;
     }
 
-    public PropertyDetail getMarketCap() {
+    public StockMetric getMarketCap() {
         return marketCap;
     }
 
-    public void setMarketCap(PropertyDetail marketCap) {
+    public void setMarketCap(StockMetric marketCap) {
         this.marketCap = marketCap;
     }
 
-    public PropertyDetail getPE() {
+    public StockMetric getPE() {
         return pE;
     }
 
-    public void setPE(PropertyDetail pE) {
+    public void setPE(StockMetric pE) {
         this.pE = pE;
     }
 
-    public PropertyDetail getFaceValue() {
+    public StockMetric getFaceValue() {
         return faceValue;
     }
 
-    public void setFaceValue(PropertyDetail faceValue) {
+    public void setFaceValue(StockMetric faceValue) {
         this.faceValue = faceValue;
     }
 
-    public PropertyDetail getDividend() {
+    public StockMetric getDividend() {
         return dividend;
     }
 
-    public void setDividend(PropertyDetail dividend) {
+    public void setDividend(StockMetric dividend) {
         this.dividend = dividend;
     }
 
