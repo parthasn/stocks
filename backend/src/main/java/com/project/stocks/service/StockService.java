@@ -30,10 +30,10 @@ public class StockService {
 
     private void calculateStockMetrics(Stock stock) {
         scoreBuilder.withPE(stock.getPE().getValue());
-        scoreBuilder.withBorrowings(stock.getOpmDetails().getYearInfo());
-        scoreBuilder.withBorrowings(stock.getNpmDetails().getYearInfo());
-        scoreBuilder.withBorrowings(stock.getDebt().getRevenueDetails().getYearInfo());
-        scoreBuilder.withBorrowings(stock.getDebt().getOtherLiabilitiesDetails().getYearInfo());
+        scoreBuilder.withOPM(stock.getOpmDetails().getYearInfo());
+        scoreBuilder.withNPM(stock.getNpmDetails().getYearInfo());
+        scoreBuilder.withRevenue(stock.getDebt().getRevenueDetails().getYearInfo());
+        scoreBuilder.withOtherLiabilities(stock.getDebt().getOtherLiabilitiesDetails().getYearInfo());
         scoreBuilder.withBorrowings(stock.getDebt().getBorrowingsDetails().getYearInfo());
     }
 }
