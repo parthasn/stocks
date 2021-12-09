@@ -22,7 +22,7 @@ class StockServiceTest {
     private void setup() {
         stockRepository = mock(StockRepository.class);
         scoreBuilder = mock(ScoreBuilder.class);
-        stockService = new StockService(stockRepository, scoreBuilder);
+        stockService = new StockService(stockRepository);
     }
 
     @Test

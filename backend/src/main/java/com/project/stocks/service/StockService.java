@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 public class StockService {
 
     private StockRepository stockRepository;;
-    private ScoreBuilder scoreBuilder;
+    private ScoreBuilder scoreBuilder = ScoreBuilder.getInstance();
 
     @Autowired
-    public StockService(StockRepository stockRepository, ScoreBuilder scoreBuilder) {
-        this.scoreBuilder = scoreBuilder;
+    public StockService(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
@@ -29,11 +28,11 @@ public class StockService {
     }
 
     private void calculateStockMetrics(Stock stock) {
-        scoreBuilder.withPE(stock.getPE().getValue());
-        scoreBuilder.withOPM(stock.getOpmDetails().getYearInfo());
-        scoreBuilder.withNPM(stock.getNpmDetails().getYearInfo());
-        scoreBuilder.withRevenue(stock.getDebt().getRevenueDetails().getYearInfo());
-        scoreBuilder.withOtherLiabilities(stock.getDebt().getOtherLiabilitiesDetails().getYearInfo());
-        scoreBuilder.withBorrowings(stock.getDebt().getBorrowingsDetails().getYearInfo());
+        scoreBuilder.withPE(stock.getPE().getValue())
+                .withOPM(stock.getOpmDetails().getYearInfo())
+                .withNPM(stock.getNpmDetails().getYearInfo())
+                .withRevenue(stock.getDebt().getRevenueDetails().getYearInfo())
+                .withOtherLiabilities(stock.getDebt().getOtherLiabilitiesDetails().getYearInfo())
+                .withBorrowings(stock.getDebt().getBorrowingsDetails().getYearInfo());
     }
 }

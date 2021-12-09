@@ -4,17 +4,16 @@ package com.project.stocks.service;
 import com.project.stocks.dto.Logic;
 import com.project.stocks.dto.YearInfo;
 import com.project.stocks.model.Score;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.project.stocks.dto.Logic.Decreasing;
 
-@Service
 public class ScoreBuilder {
 
     private Score score = new Score();
+    private ScoreBuilder scoreBuilder = null;
     
     public ScoreBuilder withPE(Integer pe) {
         if(pe >= 1 && pe <=20)
@@ -28,6 +27,14 @@ public class ScoreBuilder {
         else
             score.addValue(1);
         return this;
+    }
+
+    private ScoreBuilder(){
+
+    }
+
+    public static ScoreBuilder getInstance(){
+        return new ScoreBuilder();
     }
 
     public Score build() {
