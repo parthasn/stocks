@@ -10,30 +10,32 @@ import java.util.stream.Collectors;
 
 import static com.project.stocks.dto.Logic.Decreasing;
 
+
 public class ScoreBuilder {
 
     private Score score = new Score();
     private ScoreBuilder scoreBuilder = null;
-    
+
+
     public ScoreBuilder withPE(Integer pe) {
-        if(pe >= 1 && pe <=20)
+        if (pe >= 1 && pe <= 20)
             score.addValue(5);
-        else if(pe >= 21 && pe <=40)
+        else if (pe >= 21 && pe <= 40)
             score.addValue(4);
-        else if(pe >= 41 && pe <=60)
+        else if (pe >= 41 && pe <= 60)
             score.addValue(3);
-        else if(pe >= 61 && pe <=80)
+        else if (pe >= 61 && pe <= 80)
             score.addValue(2);
         else
             score.addValue(1);
         return this;
     }
 
-    ScoreBuilder(){
 
+    private ScoreBuilder() {
     }
 
-    public static ScoreBuilder getInstance(){
+    public static ScoreBuilder getInstance() {
         return new ScoreBuilder();
     }
 
@@ -76,24 +78,23 @@ public class ScoreBuilder {
     private int calculateYearlyStatistics(List<YearInfo> inputList, Logic logic) {
         List<YearInfo> last6YearsOPMList = getLast6YearsRecordInDescendingOrder(inputList);
         int score = 0;
-        for(int i = 1; i < last6YearsOPMList.size(); i++){
-            int presentYear = last6YearsOPMList.get(i-1).getValue();
+        for (int i = 1; i < last6YearsOPMList.size(); i++) {
+            int presentYear = last6YearsOPMList.get(i - 1).getValue();
             int previousYear = last6YearsOPMList.get(i).getValue();
-            if(logic.equals(Logic.Increasing)){
-                if(presentYear > previousYear)
+            if (logic.equals(Logic.Increasing)) {
+                if (presentYear > previousYear)
                     score++;
-            }
-            else if(logic.equals(Decreasing)){
-                if(presentYear < previousYear)
+            } else if (logic.equals(Decreasing)) {
+                if (presentYear < previousYear)
                     score++;
             }
         }
         return score;
     }
 
-    private List<YearInfo> getLast6YearsRecordInDescendingOrder(List<YearInfo> inputList){
+    private List<YearInfo> getLast6YearsRecordInDescendingOrder(List<YearInfo> inputList) {
         List<YearInfo> last6Years = inputList.stream()
-                .sorted((a,b) -> b.getYear()-a.getYear())
+                .sorted((a, b) -> b.getYear() - a.getYear())
                 .limit(6)
                 .collect(Collectors.toList());
         return last6Years;
