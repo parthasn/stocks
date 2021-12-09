@@ -29,7 +29,7 @@ public class ScoreBuilder {
         return this;
     }
 
-    private ScoreBuilder(){
+    ScoreBuilder(){
 
     }
 

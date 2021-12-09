@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StockService {
 
-    private StockRepository stockRepository;;
-    private ScoreBuilder scoreBuilder = ScoreBuilder.getInstance();
+    private StockRepository stockRepository;
 
     @Autowired
     public StockService(StockRepository stockRepository) {
@@ -23,16 +22,18 @@ public class StockService {
 
     public Score calculateScore(String stockId) {
         Stock stock = getStockDetails(stockId);
-        calculateStockMetrics(stock);
-        return scoreBuilder.build();
+        Score score = calculateStockMetrics(stock);
+        return score;
     }
 
-    private void calculateStockMetrics(Stock stock) {
+    private Score calculateStockMetrics(Stock stock) {
+        ScoreBuilder scoreBuilder = ScoreBuilder.getInstance();
         scoreBuilder.withPE(stock.getPE().getValue())
                 .withOPM(stock.getOpmDetails().getYearInfo())
                 .withNPM(stock.getNpmDetails().getYearInfo())
                 .withRevenue(stock.getDebt().getRevenueDetails().getYearInfo())
                 .withOtherLiabilities(stock.getDebt().getOtherLiabilitiesDetails().getYearInfo())
                 .withBorrowings(stock.getDebt().getBorrowingsDetails().getYearInfo());
+        return scoreBuilder.build();
     }
 }
