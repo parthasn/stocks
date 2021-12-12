@@ -1,0 +1,10 @@
+body {
+    background-color: #d5dde8;
+}
+.mainDiv {
+    padding: 30px;
+    height: 85vh;
+    margin: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
